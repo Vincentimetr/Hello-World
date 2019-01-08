@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+    <head>
+        <title>Tables</title>
+        <meta charset="utf-8" />
+        <!-- <meta http-equiv="refresh" content="1"> -->
+        <style>
+            table {font-family: arial; border-collapse: collapse; width: 100%; font-size:25mpx; text-align:center;}
+            td {color:grey; font-size:20px; border: 1px solid #dddddd; text-align: left; padding: 8px;}
+            th {border: 1px solid #dddddd; text-align: left; padding: 8px;}
+            tr:nth-child(even) {background-color: #dddddd;}
+        </style>
+    </head>
+
+    <body>
+        {% for table in tables %}
+        <table>
+            <tr>
+                {% for colonne in table['colonnes'] %}
+                    <th>{{ colonne }}</th>
+                {% endfor %}
+            </tr>
+            {% for i in table['values'] %}
+            <tr>
+                
+                    {% for j in i %}
+                        <td>{{ j }}</td>
+                    {% endfor %}
+                
+            </tr>
+            {% endfor %}
+        </table>
+        {% endfor %}
+    </body>
+</html>
