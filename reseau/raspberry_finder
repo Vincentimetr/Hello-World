@@ -36,7 +36,6 @@ for i in range(3,len(arp)-1):
     if not("b8:27:eb"==mac[:8]):
         continue
     if REZAL_ping(machine[0]):
-        print(machine)
         result.append(machine)
         
 
