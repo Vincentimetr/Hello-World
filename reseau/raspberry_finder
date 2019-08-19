@@ -1,0 +1,38 @@
+import subprocess
+import os
+import threading
+import socket
+
+IP=(socket.gethostbyname(socket.gethostname())).split(".")
+mask=""
+for i in range(len(IP)-1):
+    mask+=IP[i]+"."
+
+def REZAL_ping(IP):
+    if (int(os.system("ping -n 2 -w 1 "+str(IP))==0)):
+        return True
+    else:
+        return False
+
+for i in range(256):
+    IP=mask+str(i)
+    threading.Thread(target=REZAL_ping,args=[IP]).start()
+result=[]
+
+arp=str((subprocess.check_output("arp -a"))).replace("\\r","").replace("     ","|").split("\\n")
+for i in range(3,len(arp)-1):
+    machine=((str(arp[i]).replace(" ","").replace("||","|").replace("-",":").split("|")))
+    result.append(machine+[REZAL_ping(machine[0])])
+
+final=[]
+for appareil in result:
+    ip=appareil[0]
+    mac=appareil[1]
+    sortIP=appareil[2]
+    pinged=appareil[3]
+    if not("b8:27:eb"==mac[:8]):
+        continue
+    if not(pinged):
+        continue
+    final.append(appareil)
+print(final)
