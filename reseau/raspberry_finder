@@ -18,7 +18,7 @@ def REZAL_ping(IP):
 
 is_pinging=True
 
-for i in range(4,255):
+for i in range(256):
     IP=mask+str(i)
     threading.Thread(target=REZAL_ping,args=[IP]).start()
 
