@@ -18,14 +18,20 @@ def REZAL_ping(IP):
 
 is_pinging=True
 
-for i in range(256):
+for i in range(4,255):
     IP=mask+str(i)
     threading.Thread(target=REZAL_ping,args=[IP]).start()
 
-while is_pinging:
+while True:
+    breaking=True
     is_pinging=False
-    time.sleep(2.1)
-    
+    for i in range(5*10):
+        time.sleep(0.1)
+        if is_pinging:
+            breaking=False
+    print(is_pinging)
+    if breaking:
+        break
 result=[]
 arp=str((subprocess.check_output("arp -a"))).replace("\\r","").replace("     ","|").split("\\n")
 for i in range(3,len(arp)-1):
@@ -38,5 +44,4 @@ for i in range(3,len(arp)-1):
     if REZAL_ping(machine[0]):
         result.append(machine)
         
-
 print(result)
