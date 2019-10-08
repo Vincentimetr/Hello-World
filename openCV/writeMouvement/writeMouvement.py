@@ -24,14 +24,14 @@ while(cap.isOpened()):
 	
 	Time=time.time()-startTime
 	ret, frame = cap.read()
-	img= cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
-	l,w=img.shape
+	img1= cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+	l,w=img1.shape
 	n=int((l+w)/2)
 
-	img=cv2.blur(img,(int((1-sensibilite)*n),int((1-sensibilite)*n)))
+	img2=cv2.blur(img1,(int((1-sensibilite)*n),int((1-sensibilite)*n)))
 	
 	timeSave=[Time]+timeSave
-	imgSave=[img]+imgSave
+	imgSave=[img2]+imgSave
 	
 	for i in range(len(timeSave)):
 		if (Time-timeSave[i]>=1/FPS):
@@ -42,17 +42,17 @@ while(cap.isOpened()):
 	if (time.time()-timeWrite>1/FPS):
 		timeWrite=time.time()
 		try:
-			img=cv2.add(img,-imgSub)
-			cv2.imshow('img',img)
+			img3=cv2.add(img2,-imgSub)
 		except:
-			img=img
-		img = cv2.threshold(img,255*(sensibilite),255,cv2.THRESH_BINARY_INV)[1]
+			img3=img2
+		img4 = cv2.threshold(img3,255*(sensibilite),255,cv2.THRESH_BINARY_INV)[1]
 		
-		cv2.imshow('frame',img)
-		ret,thresh = cv2.threshold(img,127,255,0)
-		img, contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-		cv2.drawContours(img,contours, -1, (0,0,0), 3)
 		
+		ret,thresh = cv2.threshold(img4,127,255,0)
+        
+		contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+		cv2.drawContours(img4,contours, -1, (0,0,0), 3)
+		cv2.imshow('frame',img4)
 		if (len(contours)>1):
 			if(countImage>=imageFile):
 				if (countFile>=maxFile):
@@ -81,7 +81,3 @@ while(cap.isOpened()):
 			print("countFile: "+str(countFile)+" / "+str(maxFile))
 			print("countImage: "+str(countImage)+" / "+str(imageFile))
 			print()
-			
-	
-	if cv2.waitKey(1) & 0xFF == ord('q'):
-		break
